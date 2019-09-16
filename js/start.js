@@ -1,25 +1,25 @@
 'use strict';
 window.renderStatistics = function (ctx, names, times) {
-  // Координаты тени облачка
-  ctx.beginPath();
-  ctx.moveTo(210, 100);
-  ctx.bezierCurveTo(210, 0, 410, 0, 410, 100);
-  ctx.bezierCurveTo(550, 100, 550, 210, 410, 210);
-  ctx.bezierCurveTo(410, 310, 210, 310, 210, 210);
-  ctx.bezierCurveTo(90, 210, 90, 100, 210, 100);
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-  ctx.fill();
-  // Координаты облачка
-  ctx.beginPath();
-  ctx.moveTo(200, 90);
-  ctx.bezierCurveTo(200, -10, 400, -10, 400, 90);
-  ctx.bezierCurveTo(540, 90, 540, 200, 400, 200);
-  ctx.bezierCurveTo(400, 300, 200, 300, 200, 200);
-  ctx.bezierCurveTo(80, 200, 80, 90, 200, 90);
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(169, 175, 232, 1)';
-  ctx.fill();
+  // Переменные
+  var RIGHT_INDENT_X = 155; // Координата "x" отступа слева
+  var MAX_SCALE_LENGTH = 100; // Максимальная высота колонки
+  var COLUMN_WIDTH = 40; // Ширина каждой колонки
+  var MAX_INDEX = 0; // Индекс максимального значения колонки
+  var MAX_VALUE = times[MAX_INDEX]; // Значение высочайшей колонки по умолчанию
+  // Функция для расчета местоположения облачка и его тени
+  var renderCloud = function (color, slip) {
+    ctx.beginPath();
+    ctx.moveTo(210 - slip, 100 - slip);
+    ctx.bezierCurveTo(210 - slip, 0 - slip, 410 - slip, 0 - slip, 410 - slip, 100 - slip);
+    ctx.bezierCurveTo(550 - slip, 100 - slip, 550 - slip, 210 - slip, 410 - slip, 210 - slip);
+    ctx.bezierCurveTo(410 - slip, 310 - slip, 210 - slip, 310 - slip, 210 - slip, 210 - slip);
+    ctx.bezierCurveTo(90 - slip, 210 - slip, 90 - slip, 100 - slip, 210 - slip, 100 - slip);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+  };
+  renderCloud('rgba(0, 0, 0, 0.7)', 0); // облако
+  renderCloud('rgba(169, 175, 232, 1)', 10); // тень облака
   // Текст поздравления внутри облачка
   ctx.fillStyle = 'black';
   ctx.font = '16px Pt Mono';
@@ -30,41 +30,27 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.fillRect(135, 100, 350, 150);
   ctx.strokeStyle = 'black';
   ctx.strokeRect(135, 100, 350, 150);
-
-  // Глобальные переменные
-  var xFrstPlr = 155; // Координата "x" первого имени в списке
-  var xFrstClmn = 155; // Координата "x" первой колонки в списке
-  var xFrstAmnt = 155; // Координата "х" указания количества миллисекунд для первого игрока
-  var MAX_SCALE_LENGTH = 100; // Максимальная высота колонки
-  var COLUMN_WIDTH = 40; // Ширина каждой колонки
-  var MAX_INDEX = 0; // Индекс максимального значения колонки
-  var MAX_VALUE = times[MAX_INDEX]; // Значение высочайшей колонки по умолчанию
-
   // Поиск актуального максимального значения из всех колонок
   for (var i = MAX_INDEX + 1; i < times.length; i++) {
     if (times[i] > MAX_VALUE) {
       MAX_VALUE = times[i];
     }
   }
-  // Рейтинг гистограмме
-  for (var j = 0; j < names.length; j++) { // пришлось сделать для "Вы" отдельный цикл, чтобы колонка не перемещалась
+  // Функция расчета рейтинга в гистограмме для каждого игрока
+  var renderPlayer = function (arrayName, arrayIndex, arrayColumnColor) {
+    ctx.fillStyle = 'black';
+    ctx.font = '16px PT Mono';
+    ctx.fillText(arrayName, RIGHT_INDENT_X + 90 * arrayIndex, 240);
+    ctx.fillText(Math.floor(times[arrayIndex]), RIGHT_INDENT_X + 90 * arrayIndex, 120 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[arrayIndex]);
+    ctx.fillStyle = arrayColumnColor;
+    ctx.fillRect(RIGHT_INDENT_X + 90 * arrayIndex, 125 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[arrayIndex], COLUMN_WIDTH, MAX_SCALE_LENGTH / MAX_VALUE * times[arrayIndex]);
+  };
+  // Цикл для анализа каждого игрока из массива
+  for (var j = 0; j < names.length; j++) {
     if (names[j] === 'Вы') {
-      ctx.fillStyle = 'black';
-      ctx.font = '16px PT Mono';
-      ctx.fillText(names[j], xFrstPlr, 240);
-      ctx.fillText(Math.floor(times[names.indexOf(names[j])]), xFrstAmnt, 120 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[j])]);
-      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-      ctx.fillRect(xFrstClmn, 125 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[j])], COLUMN_WIDTH, MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[j])]);
-    }
-  }
-  for (var k = 0; k < names.length; k++) {
-    if (names[k] !== 'Вы') {
-      ctx.fillStyle = 'black';
-      ctx.font = '16px PT Mono';
-      ctx.fillText(names[k], xFrstPlr += 90, 240);
-      ctx.fillText(Math.floor(times[names.indexOf(names[k])]), xFrstAmnt += 90, 120 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[k])]);
-      ctx.fillStyle = 'hsl(240, ' + Math.random() * 100 + '%' + ', 50%)';
-      ctx.fillRect(xFrstClmn += 90, 125 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[k])], COLUMN_WIDTH, MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[k])]);
+      renderPlayer(names[j], names.indexOf(names[j]), 'rgba(255, 0, 0, 1)');
+    } else {
+      renderPlayer(names[j], names.indexOf(names[j]), 'hsl(240, ' + Math.random() * 100 + '%' + ', 50%)');
     }
   }
 };
