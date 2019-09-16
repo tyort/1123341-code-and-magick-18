@@ -1,4 +1,5 @@
-window.renderStatistics = function(ctx, names, times) {
+'use strict';
+window.renderStatistics = function (ctx, names, times) {
   // Координаты тени облачка
   ctx.beginPath();
   ctx.moveTo(210, 100);
@@ -31,9 +32,9 @@ window.renderStatistics = function(ctx, names, times) {
   ctx.strokeRect(135, 100, 350, 150);
 
   // Глобальные переменные
-  var PLAYER_x = 155; // Координата "x" первого имени в списке
-  var COLUMN_x = 155; // Координата "x" первой колонки в списке
-  var AMOUNT_x = 155; // Координата "х" указания количества миллисекунд для первого игрока
+  var xFrstPlr = 155; // Координата "x" первого имени в списке
+  var xFrstClmn = 155; // Координата "x" первой колонки в списке
+  var xFrstAmnt = 155; // Координата "х" указания количества миллисекунд для первого игрока
   var MAX_SCALE_LENGTH = 100; // Максимальная высота колонки
   var COLUMN_WIDTH = 40; // Ширина каждой колонки
   var MAX_INDEX = 0; // Индекс максимального значения колонки
@@ -43,27 +44,27 @@ window.renderStatistics = function(ctx, names, times) {
   for (var i = MAX_INDEX + 1; i < times.length; i++) {
     if (times[i] > MAX_VALUE) {
       MAX_VALUE = times[i];
-    };
-  };
+    }
+  }
   // Рейтинг гистограмме
-  for (var i = 0; i < names.length; i++ ) { // пришлось сделать для "Вы" отдельный цикл, чтобы колонка не перемещалась
-    if (names[i] === 'Вы') {
+  for (var j = 0; j < names.length; j++) { // пришлось сделать для "Вы" отдельный цикл, чтобы колонка не перемещалась
+    if (names[j] === 'Вы') {
       ctx.fillStyle = 'black';
       ctx.font = '16px PT Mono';
-      ctx.fillText(names[i], PLAYER_x, 240);
-      ctx.fillText(Math.floor(times[names.indexOf(names[i])]), AMOUNT_x, 120 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[i])]);
+      ctx.fillText(names[j], xFrstPlr, 240);
+      ctx.fillText(Math.floor(times[names.indexOf(names[j])]), xFrstAmnt, 120 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[j])]);
       ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-      ctx.fillRect(COLUMN_x, 125 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[i])], COLUMN_WIDTH, MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[i])]);
-    };
-  };
-  for (var i = 0; i < names.length; i++ ) {
-    if (names[i] !== 'Вы') {
+      ctx.fillRect(xFrstClmn, 125 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[j])], COLUMN_WIDTH, MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[j])]);
+    }
+  }
+  for (var k = 0; k < names.length; k++) {
+    if (names[k] !== 'Вы') {
       ctx.fillStyle = 'black';
       ctx.font = '16px PT Mono';
-      ctx.fillText(names[i], PLAYER_x += 90, 240);
-      ctx.fillText(Math.floor(times[names.indexOf(names[i])]), AMOUNT_x += 90, 120 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[i])]);
-      ctx.fillStyle = 'hsl(240, '+ Math.random()*100 + '%' +', 50%)';
-      ctx.fillRect(COLUMN_x += 90, 125 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[i])], COLUMN_WIDTH, MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[i])]);
-    };
-  };
+      ctx.fillText(names[k], xFrstPlr += 90, 240);
+      ctx.fillText(Math.floor(times[names.indexOf(names[k])]), xFrstAmnt += 90, 120 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[k])]);
+      ctx.fillStyle = 'hsl(240, ' + Math.random() * 100 + '%' + ', 50%)';
+      ctx.fillRect(xFrstClmn += 90, 125 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[k])], COLUMN_WIDTH, MAX_SCALE_LENGTH / MAX_VALUE * times[names.indexOf(names[k])]);
+    }
+  }
 };
