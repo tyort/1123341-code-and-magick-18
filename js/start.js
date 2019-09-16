@@ -7,19 +7,19 @@ window.renderStatistics = function (ctx, names, times) {
   var MAX_INDEX = 0; // Индекс максимального значения колонки
   var MAX_VALUE = times[MAX_INDEX]; // Значение высочайшей колонки по умолчанию
   // Функция для расчета местоположения облачка и его тени
-  var renderCloud = function (color, slip) {
+  var renderCloud = function (color, oneDot, twoDot, threeDot, fourDot, fiveDot, sixDot) {
     ctx.beginPath();
-    ctx.moveTo(210 - slip, 100 - slip);
-    ctx.bezierCurveTo(210 - slip, 0 - slip, 410 - slip, 0 - slip, 410 - slip, 100 - slip);
-    ctx.bezierCurveTo(550 - slip, 100 - slip, 550 - slip, 210 - slip, 410 - slip, 210 - slip);
-    ctx.bezierCurveTo(410 - slip, 310 - slip, 210 - slip, 310 - slip, 210 - slip, 210 - slip);
-    ctx.bezierCurveTo(90 - slip, 210 - slip, 90 - slip, 100 - slip, 210 - slip, 100 - slip);
+    ctx.moveTo(oneDot, twoDot);
+    ctx.bezierCurveTo(oneDot, threeDot, fourDot, threeDot, fourDot, twoDot);
+    ctx.bezierCurveTo(fiveDot, twoDot, fiveDot, oneDot, fourDot, oneDot);
+    ctx.bezierCurveTo(fourDot, sixDot, oneDot, sixDot, oneDot, oneDot);
+    ctx.bezierCurveTo(twoDot, oneDot, twoDot, twoDot, oneDot, twoDot);
     ctx.closePath();
     ctx.fillStyle = color;
     ctx.fill();
   };
-  renderCloud('rgba(0, 0, 0, 0.7)', 0); // облако
-  renderCloud('rgba(169, 175, 232, 1)', 10); // тень облака
+  renderCloud('rgba(0, 0, 0, 0.7)', 210, 100, 0, 410, 550, 310); // облако
+  renderCloud('rgba(169, 175, 232, 1)', 200, 90, -10, 400, 540, 300); // тень облака
   // Текст поздравления внутри облачка
   ctx.fillStyle = 'black';
   ctx.font = '16px Pt Mono';
@@ -48,9 +48,9 @@ window.renderStatistics = function (ctx, names, times) {
   // Цикл для анализа каждого игрока из массива
   for (var j = 0; j < names.length; j++) {
     if (names[j] === 'Вы') {
-      renderPlayer(names[j], names.indexOf(names[j]), 'rgba(255, 0, 0, 1)');
+      renderPlayer(names[j], j, 'rgba(255, 0, 0, 1)');
     } else {
-      renderPlayer(names[j], names.indexOf(names[j]), 'hsl(240, ' + Math.random() * 100 + '%' + ', 50%)');
+      renderPlayer(names[j], j, 'hsl(240, ' + Math.random() * 100 + '%' + ', 50%)');
     }
   }
 };
