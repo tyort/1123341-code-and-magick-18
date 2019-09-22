@@ -44,5 +44,3 @@ window.renderStatistics = function (ctx, names, times) {
     ctx.fillRect(RIGHT_INDENT_X + 90 * index, 125 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[index], COLUMN_WIDTH, MAX_SCALE_LENGTH / MAX_VALUE * times[index]);
   }
 };
-
-
