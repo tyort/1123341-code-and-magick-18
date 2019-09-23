@@ -40,7 +40,7 @@ window.renderStatistics = function (ctx, names, times) {
     ctx.font = '16px PT Mono';
     ctx.fillText(name, RIGHT_INDENT_X + 90 * index, 240);
     ctx.fillText(Math.floor(times[index]), RIGHT_INDENT_X + 90 * index, 120 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[index]);
-    ctx.fillStyle = name === 'Вы' ? 'rgba(255, 0, 0, 1)' : 'hsl(240, ' + Math.random() * 100 + '%' + ', 50%)';
+    ctx.fillStyle = name === 'Вы' ? 'rgba(255, 0, 0, 1)' : 'hsl(240, ' + Math.random() * 100 + '%, 50%)';
     ctx.fillRect(RIGHT_INDENT_X + 90 * index, 125 + MAX_SCALE_LENGTH - MAX_SCALE_LENGTH / MAX_VALUE * times[index], COLUMN_WIDTH, MAX_SCALE_LENGTH / MAX_VALUE * times[index]);
   }
 };
