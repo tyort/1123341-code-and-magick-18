@@ -1,8 +1,7 @@
 'use strict';
 
-var userDialog = document.querySelector('.setup');
-removeHiddenClass(userDialog);
-removeHiddenClass(document.querySelector('.setup-similar'));
+removeHiddenClass('.setup');
+removeHiddenClass('.setup-similar');
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarLastWizardTemplate = document.querySelector('#similar-wizard-template')
   .content
@@ -15,27 +14,32 @@ var WIZARD_COAT_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 10
 var WIZARD_EYES_COLOR = ['red', 'black', 'blue', 'yellow', 'green'];
 
 for (var i = 0; i < 4; i++) {
-  WIZARD_PERSONALITY[i] = {};
-  renderWizard(WIZARD_PERSONALITY[i]);
-  generateWizard(similarLastWizardTemplate.cloneNode(true), i);
+  WIZARD_PERSONALITY.push(generateWizard());
+}
+
+function generateWizard() {
+  return {
+    name: getRandomItem(WIZARD_NAMES) + ' ' + getRandomItem(WIZARD_SURNAMES),
+    coatColor: getRandomItem(WIZARD_COAT_COLOR),
+    eyesColor: getRandomItem(WIZARD_EYES_COLOR),
+  };
+}
+
+for (var j = 0; j < WIZARD_PERSONALITY.length; j++) {
+  renderWizard(WIZARD_PERSONALITY[j]);
+}
+
+function renderWizard(wizard) {
+  var shape = similarLastWizardTemplate.cloneNode(true);
+  shape.querySelector('.setup-similar-label').textContent = wizard.name;
+  shape.querySelector('.wizard-coat').style.fill = wizard.coatColor;
+  shape.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
+  fragment.appendChild(shape);
 }
 similarListElement.appendChild(fragment);
 
-function renderWizard(wizards) {
-  wizards.name = getRandomItem(WIZARD_NAMES) + ' ' + getRandomItem(WIZARD_SURNAMES);
-  wizards.coatColor = getRandomItem(WIZARD_COAT_COLOR);
-  wizards.eyesColor = getRandomItem(WIZARD_EYES_COLOR);
-}
-
-function generateWizard(wizardElement, index) {
-  wizardElement.querySelector('.setup-similar-label').textContent = WIZARD_PERSONALITY[index].name;
-  wizardElement.querySelector('.wizard-coat').style.fill = WIZARD_PERSONALITY[index].coatColor;
-  wizardElement.querySelector('.wizard-eyes').style.fill = WIZARD_PERSONALITY[index].eyesColor;
-  fragment.appendChild(wizardElement);
-}
-
 function removeHiddenClass(selector) {
-  selector.classList.remove('hidden');
+  document.querySelector(selector).classList.remove('hidden');
 }
 
 function getRandomItem(array) {
