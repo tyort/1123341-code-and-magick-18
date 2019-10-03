@@ -27,7 +27,7 @@
     return randomItem;
   }
 
-  window.setup = {
+  window.generate = {
     WIZARD_PERSONALITY: WIZARD_PERSONALITY,
     WIZARD_NAMES: WIZARD_NAMES,
     WIZARD_SURNAMES: WIZARD_SURNAMES,
