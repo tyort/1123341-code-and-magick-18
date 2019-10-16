@@ -16,11 +16,13 @@
   window.onCoatChange = debounce(function (color) { // вызов функции по истечении DEBOUNCE_INTERVAL
     coatColor = color;
     updateWizards();
+    console.log(arguments);
   });
 
   function debounce(cb) {
     var lastTimeout = null;
     return function () {
+      console.log(arguments);
       var parameters = arguments;
       if (lastTimeout) {
         clearTimeout(lastTimeout);
@@ -53,7 +55,7 @@
     }
   }
 
-  function updateWizards() {
+  function updateWizards() { // вызвав функцию window.render.rendered(), мы передадим такую сложную переменную в модуль render!
     window.render.rendered(wizards.sort(function (a, b) { // функция переделает массив
       var rankDiff = getRank(b) - getRank(a); // если положительное число, то рейтинг левого игрока больше правого, не меняемся местами
       if (rankDiff === 0) { // если рейтинги одинаковые, то сравним по имени

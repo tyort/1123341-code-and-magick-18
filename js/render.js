@@ -43,6 +43,7 @@
     wizardCoat.style.fill = getRandomItem(WIZARD_COAT_COLOR);
     setupPlayer.children[0].children[1].value = wizardCoat.style.fill;
     window.onCoatChange(wizardCoat.style.fill);
+    console.log(arguments); // показыват то, что возвращает функция debounce
   }
 
   function changeEyes() {
